@@ -240,7 +240,7 @@ struct CreateValueFromTensorSpec {
 struct CreateTensorSpecFromValue {
     template <typename T> static TensorSpec invoke(const Value &value) {
         auto cells = value.cells().typify<T>();
-        TensorSpec spec(value.type().to_spec());
+        TensorSpec spec(value.type().to_spec(), value.type().cell_type());
         size_t subspace_id = 0;
         size_t subspace_size = value.type().dense_subspace_size();
         SmallVector<string_id> labels(value.type().count_mapped_dimensions());

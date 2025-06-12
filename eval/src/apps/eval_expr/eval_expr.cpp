@@ -230,7 +230,7 @@ void print_value(const Value &value, const std::string &name, const CTFMetaData 
         fprintf(stdout, "%s: ", name.c_str());
     }
     if (value.type().is_double()) {
-        fprintf(stdout, "%.32g\n", spec.as_double());
+        fprintf(stdout, "%.17g\n", spec.as_double());
     } else {
         fprintf(stdout, "%s\n", spec.to_string().c_str());
     }

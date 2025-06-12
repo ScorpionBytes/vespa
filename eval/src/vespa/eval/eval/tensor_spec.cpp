@@ -247,7 +247,14 @@ struct NormalizeTensorSpec {
 
 TensorSpec::TensorSpec(std::string type_spec) noexcept
     : _type(std::move(type_spec)),
-      _cells()
+      _cells(),
+      _cell_type(CellType::DOUBLE)
+{ }
+
+TensorSpec::TensorSpec(std::string type_spec, CellType cell_type) noexcept
+    : _type(std::move(type_spec)),
+      _cells(),
+      _cell_type(cell_type)
 { }
 
 TensorSpec::TensorSpec(const TensorSpec &) = default;
@@ -282,7 +289,14 @@ TensorSpec::to_string() const
 {
     std::string out = make_string("spec(%s) {\n", _type.c_str());
     for (const auto &cell: _cells) {
-        out.append(make_string("  %s: %g\n", addr_to_compact_string(cell.first).c_str(), cell.second.value));
+        // Use different precision based on cell type
+        // %.9g for float (enough precision for float values)
+        // %.17g for double (enough precision for double values)
+        if (_cell_type == CellType::FLOAT) {
+            out.append(make_string("  %s: %.9g\n", addr_to_compact_string(cell.first).c_str(), cell.second.value));
+        } else {
+            out.append(make_string("  %s: %.17g\n", addr_to_compact_string(cell.first).c_str(), cell.second.value));
+        }
     }
     out.append("}");
     return out;

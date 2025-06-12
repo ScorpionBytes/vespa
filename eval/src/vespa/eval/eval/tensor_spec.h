@@ -3,6 +3,7 @@
 #pragma once
 
 #include <vespa/vespalib/util/approx.h>
+#include "cell_type.h"
 #include <memory>
 #include <map>
 #include <string>
@@ -59,8 +60,10 @@ public:
 private:
     std::string _type;
     Cells _cells;
+    CellType _cell_type;
 public:
     TensorSpec(std::string type_spec) noexcept;
+    TensorSpec(std::string type_spec, CellType cell_type) noexcept;
     TensorSpec(const TensorSpec &);
     TensorSpec & operator = (const TensorSpec &);
     ~TensorSpec();
@@ -68,6 +71,8 @@ public:
     TensorSpec &add(Address address, double value);
     const std::string &type() const { return _type; }
     const Cells &cells() const { return _cells; }
+    CellType cell_type() const { return _cell_type; }
+    void set_cell_type(CellType cell_type) { _cell_type = cell_type; }
     std::string to_string() const;
     TensorSpec normalize() const;
     void to_slime(slime::Cursor &tensor) const;
